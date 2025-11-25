@@ -264,7 +264,7 @@ async function testProcessPayment(paymentData) {
 		}
 	} catch (err) {
 		console.log("DEBUG CATCH")
-
+		console.log(err)
 		return {
 			transactionState: "ERROR",
 			error: {
