@@ -258,11 +258,11 @@ async function testProcessPayment(paymentData) {
 
             if (response.status === "COMPLETED") {
                 console.log("DEBUG CAPTURE")
-                resolve({ transactionState: 'SUCCESS' });
+                return({ transactionState: 'SUCCESS' });
             }
             else {
                 console.log("DEBUG NOT COMPLETED")
-                resolve({
+                return({
                     transactionState: 'ERROR',
                     error: {
                         intent: 'PAYMENT_AUTHORIZATION',
@@ -271,6 +271,7 @@ async function testProcessPayment(paymentData) {
                 })
             }
 
+            // resolve is not defined
 
 
             console.log("DEBUG APPROVED")
