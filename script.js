@@ -253,6 +253,7 @@ async function testProcessPayment(paymentData) {
             }).then((res) => {
                 console.log(res)
                 console.log(res.json())
+                return res.json();
             })
               .catch(error => console.error('Error', error))
 
