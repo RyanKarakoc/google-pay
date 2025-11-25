@@ -247,6 +247,7 @@ async function testProcessPayment(paymentData) {
 			paymentMethodData: paymentData.paymentMethodData,
 		});
 
+		console.log(status)
 
 		if (status === "APPROVED") {
 			/* Capture the Order */
