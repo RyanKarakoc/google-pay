@@ -140,9 +140,9 @@ async function onGooglePaymentButtonClicked() {
 
 async function processPayment(paymentData) {
 	return new Promise(async function (resolve, reject) {
-		console.loG("DEBUG START")
+		console.log("DEBUG START")
 		try {
-			console.loG("DEBUG TRY")
+			console.log("DEBUG TRY")
 
 			// Create the order on your server
 
