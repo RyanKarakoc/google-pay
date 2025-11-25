@@ -254,7 +254,7 @@ async function testProcessPayment(paymentData) {
 		}
 
 
-		const { id } = getData();
+		const { id } = await getData();
 
 		console.log(id);
 		console.log(paymentData);
