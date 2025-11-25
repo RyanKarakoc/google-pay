@@ -246,7 +246,8 @@ async function testProcessPayment(paymentData) {
 
             const response = await fetch('/npors/ajax/paypal/capture_payment_sandbox.asp', {
                 method: 'POST',
-            }).then(res => res.json());
+            }).then(res => res.json())
+              .catch(error => console.error('Error', error))
 
             console.log(response)
 
