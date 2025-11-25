@@ -216,45 +216,12 @@ async function processPayment(paymentData) {
 
 async function testProcessPayment(paymentData) {
 	try {
-		//const { currencyCode, totalPrice } = getGoogleTransactionInfo();
-		//const order = {
-		//	intent: "CAPTURE",
-		//	purchase_units: [
-		//		{
-		//			amount: {
-		//				currency_code: currencyCode,
-		//				value: totalPrice,
-		//			},
-		//		},
-		//	],
-		//};
-		///* Create Order */
-		//const { id } = await fetch(`/orders`, {
-		//	method: "POST",
-		//	headers: {
-		//		"Content-Type": "application/json",
-		//	},
-		//	body: JSON.stringify(order),
-		//}).then((res) => res.json());
+		fetch('https://my.npors.com/npors/ajax/paypal/generate_order_sandbox.asp')
+			.then(response => response.json())
+			.then(data => console.log(data))
+			.catch(error => console.error('Error:', error));
 
-		async function getData() {
-			const url = "https://my.npors.com/npors/ajax/paypal/generate_order_sandbox.asp";
-			try {
-				const response = await fetch(url);
-				if (!response.ok) {
-					throw new Error(`Response status: ${response.status}`);
-				}
-
-				const result = await response.json();
-				return result;
-				console.log(result);
-			} catch (error) {
-				console.error(error.message);
-			}
-		}
-
-
-		const { id } = await getData();
+		const id = "15M56342KX738870E";
 
 		console.log(id);
 		console.log(paymentData);
