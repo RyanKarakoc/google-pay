@@ -244,18 +244,15 @@ async function testProcessPayment(paymentData) {
             //}).then((res) => res.json());
             //return { transactionState: "SUCCESS" };
 
-            const response = await fetch(`https://my.npors.com/npors/ajax/paypal/capture_payment_sandbox.asp?<%=qsGet("a="&md5_string&"&pl_id="&pl_id)%>`, {
+            const fetchRes = await fetch(`https://my.npors.com/npors/ajax/paypal/capture_payment_sandbox.asp?<%=qsGet("a="&md5_string&"&pl_id="&pl_id)%>`, {
                 method: 'POST',
                 headers: {
                     "content-type": "application/x-www-form-urlencoded; charset=UTF-8"
                 },
                 body: "order_id=" + id
-            }).then((res) => {
-                console.log(res)
-                console.log(res.json())
-                return res.json();
-            })
-              .catch(error => console.error('Error', error))
+            });
+
+            const response = await fetchRes.json();
 
             console.log(response)
 
