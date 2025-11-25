@@ -244,8 +244,8 @@ async function testProcessPayment(paymentData) {
             //}).then((res) => res.json());
             //return { transactionState: "SUCCESS" };
 
-            const response = await fetch(`https://my.npors.com/npors/ajax/paypal/capture_payment_sandbox.asp?pl_id=${id}`, {
-                method: 'POST',
+            const response = await fetch(`https://my.npors.com/npors/ajax/paypal/capture_payment_sandbox.asp`, {
+                method: 'GET',
             }).then((res) => {
                 console.log(res)
                 console.log(res.json())
