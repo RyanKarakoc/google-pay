@@ -139,10 +139,10 @@ async function onGooglePaymentButtonClicked() {
 
 
 async function processPayment(paymentData) {
-	return new Promise(async function (resolve, reject) {
-		console.log("DEBUG START")
-		try {
-			console.log("DEBUG TRY")
+	//return new Promise(async function (resolve, reject) {
+		//console.log("DEBUG START")
+		//try {
+		//	console.log("DEBUG TRY")
 
 			// Create the order on your server
 
@@ -210,7 +210,7 @@ async function processPayment(paymentData) {
 		//		}
 		//	})
 		//}
-	});
+	//});
 }
 
 
@@ -257,6 +257,8 @@ async function testProcessPayment(paymentData) {
 
 			console.log("DEBUG APPROVED")
 		} else {
+			console.log("DEBUG ELSE")
+
 			return { transactionState: "ERROR" };
 		}
 	} catch (err) {
