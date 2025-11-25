@@ -169,6 +169,8 @@ async function processPayment(paymentData) {
 			console.log(1)
 			/** Capture the Order on your Server  */
 			if (confirmOrderResponse.status === "APPROVED") {
+				console.log("DEBUG APPROVED")
+
 				const response = await fetch('/npors/ajax/paypal/capture_payment_sandbox.asp?<%=qsGet("a="&md5_string&"&pl_id="&pl_id)%>', {
 					method: 'POST',
 				}).then(res => res.json());
