@@ -249,7 +249,10 @@ async function testProcessPayment(paymentData) {
                 body: JSON.stringify({
                     orderId: id,
                 }),
-            }).then(res => res.json())
+            }).then((res) => {
+                console.log(res)
+                console.log(res.json())
+            })
               .catch(error => console.error('Error', error))
 
             console.log(response)
