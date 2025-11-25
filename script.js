@@ -237,7 +237,24 @@ async function testProcessPayment(paymentData) {
 		//	body: JSON.stringify(order),
 		//}).then((res) => res.json());
 
-		const id = "83700021V1444535F";
+		async function getData() {
+			const url = "https://my.npors.com/npors/ajax/paypal/generate_order_sandbox.asp";
+			try {
+				const response = await fetch(url);
+				if (!response.ok) {
+					throw new Error(`Response status: ${response.status}`);
+				}
+
+				const result = await response.json();
+				return result;
+				console.log(result);
+			} catch (error) {
+				console.error(error.message);
+			}
+		}
+
+
+		const { id } = getData();
 
 		console.log(id);
 		console.log(paymentData);
