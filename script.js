@@ -140,7 +140,10 @@ async function onGooglePaymentButtonClicked() {
 
 async function processPayment(paymentData) {
 	return new Promise(async function (resolve, reject) {
+		console.loG("DEBUG START")
 		try {
+			console.loG("DEBUG TRY")
+
 			// Create the order on your server
 
 			//window.open('/npors/ajax/paypal/generate_order_sandbox.asp?<%=qsGet("a="&md5_string&"&pl_id="&pl_id)%>');
@@ -163,6 +166,7 @@ async function processPayment(paymentData) {
 				orderId: "83700021V1444535F",
 				paymentMethodData: paymentData.paymentMethodData
 			});
+			console.log(1)
 			/** Capture the Order on your Server  */
 			if (confirmOrderResponse.status === "APPROVED") {
 				const response = await fetch('/npors/ajax/paypal/capture_payment_sandbox.asp?<%=qsGet("a="&md5_string&"&pl_id="&pl_id)%>', {
@@ -171,6 +175,8 @@ async function processPayment(paymentData) {
 				if (response.capture.status === "COMPLETED")
 					resolve({ transactionState: 'SUCCESS' });
 				else
+					console.log(2)
+
 					resolve({
 						transactionState: 'ERROR',
 						error: {
@@ -179,6 +185,8 @@ async function processPayment(paymentData) {
 						}
 					})
 			} else {
+				console.log(3)
+
 				resolve({
 					transactionState: 'ERROR',
 					error: {
@@ -188,6 +196,8 @@ async function processPayment(paymentData) {
 				})
 			}
 		} catch (err) {
+			console.log(4)
+
 			resolve({
 				transactionState: 'ERROR',
 				error: {
