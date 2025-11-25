@@ -57,7 +57,7 @@ async function getGooglePaymentDataRequest() {
 }
 function onPaymentAuthorized(paymentData) {
 	return new Promise(function (resolve, reject) {
-		processPayment(paymentData)
+		testProcessPayment(paymentData)
 			.then(function (data) {
 				resolve({ transactionState: "SUCCESS" });
 			})
@@ -162,54 +162,111 @@ async function processPayment(paymentData) {
 			// shipping information, like name, address, and address type
 		  });
 		  */
-			const confirmOrderResponse = await paypal.Googlepay().confirmOrder({
-				orderId: "83700021V1444535F",
-				paymentMethodData: paymentData.paymentMethodData
-			});
-			console.log(1)
+		//	const confirmOrderResponse = await paypal.Googlepay().confirmOrder({
+		//		orderId: "83700021V1444535F",
+		//		paymentMethodData: paymentData.paymentMethodData
+		//	});
 
-			console.log(confirmOrderResponse)
-			/** Capture the Order on your Server  */
-			//if (confirmOrderResponse.status === "APPROVED") {
-			//	console.log("DEBUG APPROVED")
+		//	console.log(1)
+		//	/** Capture the Order on your Server  */
+		//	if (confirmOrderResponse.status === "APPROVED") {
+		//		console.log("DEBUG APPROVED")
 
-			//	const response = await fetch('/npors/ajax/paypal/capture_payment_sandbox.asp?<%=qsGet("a="&md5_string&"&pl_id="&pl_id)%>', {
-			//		method: 'POST',
-			//	}).then(res => res.json());
-			//	if (response.capture.status === "COMPLETED")
-			//		resolve({ transactionState: 'SUCCESS' });
-			//	else
-			//		console.log(2)
+		//		const response = await fetch('/npors/ajax/paypal/capture_payment_sandbox.asp?<%=qsGet("a="&md5_string&"&pl_id="&pl_id)%>', {
+		//			method: 'POST',
+		//		}).then(res => res.json());
+		//		if (response.capture.status === "COMPLETED")
+		//			resolve({ transactionState: 'SUCCESS' });
+		//		else
+		//			console.log(2)
 
-			//		resolve({
-			//			transactionState: 'ERROR',
-			//			error: {
-			//				intent: 'PAYMENT_AUTHORIZATION',
-			//				message: 'TRANSACTION FAILED',
-			//			}
-			//		})
-			//} else {
-			//	console.log(3)
+		//			resolve({
+		//				transactionState: 'ERROR',
+		//				error: {
+		//					intent: 'PAYMENT_AUTHORIZATION',
+		//					message: 'TRANSACTION FAILED',
+		//				}
+		//			})
+		//	} else {
+		//		console.log(3)
 
-			//	resolve({
-			//		transactionState: 'ERROR',
-			//		error: {
-			//			intent: 'PAYMENT_AUTHORIZATION',
-			//			message: 'TRANSACTION FAILED',
-			//		}
-			//	})
-			//}
-		} catch (err) {
-			console.log(4)
-			console.log(err.message);
+		//		resolve({
+		//			transactionState: 'ERROR',
+		//			error: {
+		//				intent: 'PAYMENT_AUTHORIZATION',
+		//				message: 'TRANSACTION FAILED',
+		//			}
+		//		})
+		//	}
+		//} catch (err) {
+		//	console.log(4)
+		//	console.log(err.message);
 
-			resolve({
-				transactionState: 'ERROR',
-				error: {
-					intent: 'PAYMENT_AUTHORIZATION',
-					message: err.message,
-				}
-			})
-		}
+		//	resolve({
+		//		transactionState: 'ERROR',
+		//		error: {
+		//			intent: 'PAYMENT_AUTHORIZATION',
+		//			message: err.message,
+		//		}
+		//	})
+		//}
 	});
+}
+
+
+async function testProcessPayment(paymentData) {
+	try {
+		//const { currencyCode, totalPrice } = getGoogleTransactionInfo();
+		//const order = {
+		//	intent: "CAPTURE",
+		//	purchase_units: [
+		//		{
+		//			amount: {
+		//				currency_code: currencyCode,
+		//				value: totalPrice,
+		//			},
+		//		},
+		//	],
+		//};
+		///* Create Order */
+		//const { id } = await fetch(`/orders`, {
+		//	method: "POST",
+		//	headers: {
+		//		"Content-Type": "application/json",
+		//	},
+		//	body: JSON.stringify(order),
+		//}).then((res) => res.json());
+
+		const id = "83700021V1444535F";
+
+		console.log(id);
+		console.log(paymentData);
+
+		const { status } = await paypal.Googlepay().confirmOrder({
+			orderId: id,
+			paymentMethodData: paymentData.paymentMethodData,
+		});
+
+
+		if (status === "APPROVED") {
+			/* Capture the Order */
+			//const captureResponse = await fetch(`/orders/${id}/capture`, {
+			//	method: "POST",
+			//}).then((res) => res.json());
+			//return { transactionState: "SUCCESS" };
+
+			console.log("DEBUG APPROVED")
+		} else {
+			return { transactionState: "ERROR" };
+		}
+	} catch (err) {
+		console.log("DEBUG CATCH")
+
+		return {
+			transactionState: "ERROR",
+			error: {
+				message: err.message,
+			},
+		};
+	}
 }
