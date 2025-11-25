@@ -125,7 +125,7 @@ function getGoogleTransactionInfo() {
 	return {
 		currencyCode: 'GBP',
 		totalPriceStatus: 'FINAL',
-		totalPrice: '100.00' // Your amount
+		totalPrice: '24.00' // Your amount
 	}
 }
 
