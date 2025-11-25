@@ -26,23 +26,29 @@ const baseRequest = {
 };
 
 let paymentsClient = null
-let allowedPaymentMethods = null
-let merchantInfo = null;
 
-//const isReadyToPayRequest = {
-//    "apiVersion": 2,
-//    "apiVersionMinor": 0,
-//    "allowedPaymentMethods": [
-//        {
-//            "type": "CARD",
-//            "parameters": {
-//                "allowedAuthMethods": ["PAN_ONLY", "CRYPTOGRAM_3DS"],
-//                "allowedCardNetworks": ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"]
-//            }
-//        }
-//    ]
-//};
+const allowedPaymentMethods = [
+    {
+        "type": "CARD",
+        "parameters": {
+            "allowedAuthMethods": ["PAN_ONLY", "CRYPTOGRAM_3DS"],
+            "allowedCardNetworks": ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"]
+        }
+    }
+];
 
+const merchantInfo = {
+    merchantName: 'Example Merchant',
+    merchantId: '12345678901234567890'
+};
+
+const tokenizationSpecification = {
+    type: 'PAYMENT_GATEWAY',
+    parameters: {
+        'gateway': 'example',
+        'gatewayMerchantId': 'exampleGatewayMerchantId'
+    }
+};
 
 
 /* Configure your site's support for payment methods supported by the Google Pay */
@@ -68,27 +74,7 @@ async function getGooglePayConfig() {
 /* Configure support for the Google Pay API */
 async function getGooglePaymentDataRequest() {
     const paymentDataRequest = Object.assign({}, baseRequest);
-
-    paymentDataRequest.merchantInfo = {
-        merchantName: 'Example Merchant',
-        merchantId: '12345678901234567890'
-    };
-
-    const allowedPaymentMethods = [
-        {
-            "type": "CARD",
-            "parameters": {
-                "allowedAuthMethods": ["PAN_ONLY", "CRYPTOGRAM_3DS"],
-                "allowedCardNetworks": ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"]
-            }
-        }
-    ];
-
-    const merchantInfo = {
-        merchantName: 'Example Merchant',
-        merchantId: '12345678901234567890'
-    };
-
+    paymentDataRequest.merchantInfo = merchantInfo;
     paymentDataRequest.allowedPaymentMethods = allowedPaymentMethods;
     paymentDataRequest.transactionInfo = getGoogleTransactionInfo();
     paymentDataRequest.merchantInfo = merchantInfo;
@@ -116,18 +102,6 @@ function getGooglePaymentsClient() {
 
 async function onGooglePayLoaded() {
     const paymentsClient = getGooglePaymentsClient();
-    //const { allowedPaymentMethods } = await getGooglePayConfig();
-
-    const allowedPaymentMethods = [
-        {
-            "type": "CARD",
-            "parameters": {
-                "allowedAuthMethods": ["PAN_ONLY", "CRYPTOGRAM_3DS"],
-                "allowedCardNetworks": ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"]
-            }
-        }
-    ];
-
     paymentsClient
         .isReadyToPay(getGoogleIsReadyToPayRequest(allowedPaymentMethods))
         .then(function (response) {
@@ -192,7 +166,7 @@ async function onGooglePaymentButtonClicked() {
 
     paymentsClient.loadPaymentData(paymentDataRequest).then(function (paymentData) {
         // if using gateway tokenization, pass this token without modification
-        //paymentToken = paymentData.paymentMethodData.tokenizationData.token;
+        paymentToken = paymentData.paymentMethodData.tokenizationData.token;
         console.log(3)
     }).catch(function (err) {
         // show error in developer console for debugging
