@@ -167,38 +167,41 @@ async function processPayment(paymentData) {
 				paymentMethodData: paymentData.paymentMethodData
 			});
 			console.log(1)
+
+			console.log(confirmOrderResponse)
 			/** Capture the Order on your Server  */
-			if (confirmOrderResponse.status === "APPROVED") {
-				console.log("DEBUG APPROVED")
+			//if (confirmOrderResponse.status === "APPROVED") {
+			//	console.log("DEBUG APPROVED")
 
-				const response = await fetch('/npors/ajax/paypal/capture_payment_sandbox.asp?<%=qsGet("a="&md5_string&"&pl_id="&pl_id)%>', {
-					method: 'POST',
-				}).then(res => res.json());
-				if (response.capture.status === "COMPLETED")
-					resolve({ transactionState: 'SUCCESS' });
-				else
-					console.log(2)
+			//	const response = await fetch('/npors/ajax/paypal/capture_payment_sandbox.asp?<%=qsGet("a="&md5_string&"&pl_id="&pl_id)%>', {
+			//		method: 'POST',
+			//	}).then(res => res.json());
+			//	if (response.capture.status === "COMPLETED")
+			//		resolve({ transactionState: 'SUCCESS' });
+			//	else
+			//		console.log(2)
 
-					resolve({
-						transactionState: 'ERROR',
-						error: {
-							intent: 'PAYMENT_AUTHORIZATION',
-							message: 'TRANSACTION FAILED',
-						}
-					})
-			} else {
-				console.log(3)
+			//		resolve({
+			//			transactionState: 'ERROR',
+			//			error: {
+			//				intent: 'PAYMENT_AUTHORIZATION',
+			//				message: 'TRANSACTION FAILED',
+			//			}
+			//		})
+			//} else {
+			//	console.log(3)
 
-				resolve({
-					transactionState: 'ERROR',
-					error: {
-						intent: 'PAYMENT_AUTHORIZATION',
-						message: 'TRANSACTION FAILED',
-					}
-				})
-			}
+			//	resolve({
+			//		transactionState: 'ERROR',
+			//		error: {
+			//			intent: 'PAYMENT_AUTHORIZATION',
+			//			message: 'TRANSACTION FAILED',
+			//		}
+			//	})
+			//}
 		} catch (err) {
 			console.log(4)
+			console.log(err.message);
 
 			resolve({
 				transactionState: 'ERROR',
