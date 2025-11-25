@@ -172,9 +172,9 @@ async function processPayment(paymentData) {
     //	if (confirmOrderResponse.status === "APPROVED") {
     //		console.log("DEBUG APPROVED")
 
-    //		const response = await fetch('/npors/ajax/paypal/capture_payment_sandbox.asp?<%=qsGet("a="&md5_string&"&pl_id="&pl_id)%>', {
-    //			method: 'POST',
-    //		}).then(res => res.json());
+    		//const response = await fetch('/npors/ajax/paypal/capture_payment_sandbox.asp?<%=qsGet("a="&md5_string&"&pl_id="&pl_id)%>', {
+    		//	method: 'POST',
+    		//}).then(res => res.json());
     //		if (response.capture.status === "COMPLETED")
     //			resolve({ transactionState: 'SUCCESS' });
     //		else
@@ -246,6 +246,9 @@ async function testProcessPayment(paymentData) {
 
             const response = await fetch('/npors/ajax/paypal/capture_payment_sandbox.asp', {
                 method: 'POST',
+                body: JSON.stringify({
+                    orderId: id,
+                }),
             }).then(res => res.json())
               .catch(error => console.error('Error', error))
 
@@ -265,6 +268,8 @@ async function testProcessPayment(paymentData) {
                     }
                 })
             }
+
+
 
             console.log("DEBUG APPROVED")
         } else {
