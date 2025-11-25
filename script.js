@@ -256,7 +256,7 @@ async function testProcessPayment(paymentData) {
 
             console.log(response)
 
-            if (response.capture.status === "COMPLETED") {
+            if (response.status === "COMPLETED") {
                 console.log("DEBUG CAPTURE")
                 resolve({ transactionState: 'SUCCESS' });
             }
