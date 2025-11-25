@@ -76,7 +76,7 @@ async function getGooglePaymentDataRequest() {
 
     const allowedPaymentMethods = [
         {
-            "type": "CARD",
+            "type": "PAYMENT_GATEWAY",
             "parameters": {
                 "allowedAuthMethods": ["PAN_ONLY", "CRYPTOGRAM_3DS"],
                 "allowedCardNetworks": ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"]
