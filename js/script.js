@@ -7,7 +7,6 @@ const baseRequest = {
     apiVersionMinor: 0,
 };
 
-
 // Define the isReadyToPayRequest object
 const isReadyToPayRequest = {
     apiVersion: 2,
@@ -57,7 +56,7 @@ async function getGooglePaymentDataRequest() {
 }
 function onPaymentAuthorized(paymentData) {
     return new Promise(function (resolve, reject) {
-        testProcessPayment(paymentData)
+        processPayment(paymentData)
             .then(function (data) {
                 resolve({ transactionState: "SUCCESS" });
             })
@@ -139,84 +138,8 @@ async function onGooglePaymentButtonClicked() {
 
 
 async function processPayment(paymentData) {
-    //return new Promise(async function (resolve, reject) {
-    //console.log("DEBUG START")
-    //try {
-    //	console.log("DEBUG TRY")
-
-    // Create the order on your server
-
-    //window.open('/npors/ajax/paypal/generate_order_sandbox.asp?<%=qsGet("a="&md5_string&"&pl_id="&pl_id)%>');
-
-    //const {id} = "83700021V1444535F";
-
-    //alert({id});
-
-    /*
-    const {id} = await fetch('/npors/ajax/paypal/generate_order_sandbox.asp?<%=qsGet("a="&md5_string&"&pl_id="&pl_id)%>', {
-    method: "POST",
-    //body:
-    // You can use the "body" parameter to pass optional, additional order information, such as:
-    // amount, and amount breakdown elements like tax, shipping, and handling
-    // item data, such as sku, name, unit_amount, and quantity
-    // shipping information, like name, address, and address type
-  });
-  */
-    //	const confirmOrderResponse = await paypal.Googlepay().confirmOrder({
-    //		orderId: "83700021V1444535F",
-    //		paymentMethodData: paymentData.paymentMethodData
-    //	});
-
-    //	console.log(1)
-    //	/** Capture the Order on your Server  */
-    //	if (confirmOrderResponse.status === "APPROVED") {
-    //		console.log("DEBUG APPROVED")
-
-    		//const response = await fetch('/npors/ajax/paypal/capture_payment_sandbox.asp?<%=qsGet("a="&md5_string&"&pl_id="&pl_id)%>', {
-    		//	method: 'POST',
-    		//}).then(res => res.json());
-    //		if (response.capture.status === "COMPLETED")
-    //			resolve({ transactionState: 'SUCCESS' });
-    //		else
-    //			console.log(2)
-
-    //			resolve({
-    //				transactionState: 'ERROR',
-    //				error: {
-    //					intent: 'PAYMENT_AUTHORIZATION',
-    //					message: 'TRANSACTION FAILED',
-    //				}
-    //			})
-    //	} else {
-    //		console.log(3)
-
-    //		resolve({
-    //			transactionState: 'ERROR',
-    //			error: {
-    //				intent: 'PAYMENT_AUTHORIZATION',
-    //				message: 'TRANSACTION FAILED',
-    //			}
-    //		})
-    //	}
-    //} catch (err) {
-    //	console.log(4)
-    //	console.log(err.message);
-
-    //	resolve({
-    //		transactionState: 'ERROR',
-    //		error: {
-    //			intent: 'PAYMENT_AUTHORIZATION',
-    //			message: err.message,
-    //		}
-    //	})
-    //}
-    //});
-}
-
-
-async function testProcessPayment(paymentData) {
     try {
-
+        // GET ORDER ID FROM NPORS ENDPOINT
         async function getId() {
             return fetch('https://my.npors.com/npors/ajax/paypal/generate_order_sandbox.asp')
                 .then(response => response.json())
@@ -224,26 +147,16 @@ async function testProcessPayment(paymentData) {
                 .catch(error => console.error('Error:', error));
         }
 
-
         const { id } = await getId();
 
-        console.log(id);
-        console.log(paymentData);
-
+        // GET PAYMENT MEHOD STATUS FROM GOOGLE API
         const { status } = await paypal.Googlepay().confirmOrder({
             orderId: id,
             paymentMethodData: paymentData.paymentMethodData,
         });
 
-        console.log(status)
-
         if (status === "APPROVED") {
-            /* Capture the Order */
-            //const captureResponse = await fetch(`/orders/${id}/capture`, {
-            //	method: "POST",
-            //}).then((res) => res.json());
-            //return { transactionState: "SUCCESS" };
-
+            // CAPTURE STATUS WITH NPORS ENDPOINT
             const fetchRes = await fetch(`https://my.npors.com/npors/ajax/paypal/capture_payment_sandbox.asp?<%=qsGet("a="&md5_string&"&pl_id="&pl_id)%>`, {
                 method: 'POST',
                 headers: {
@@ -254,15 +167,11 @@ async function testProcessPayment(paymentData) {
 
             const response = await fetchRes.json();
 
-            console.log(response)
-
             if (response.status === "COMPLETED") {
-                console.log("DEBUG CAPTURE")
-                return({ transactionState: 'SUCCESS' });
+                return ({ transactionState: 'SUCCESS' });
             }
             else {
-                console.log("DEBUG NOT COMPLETED")
-                return({
+                return ({
                     transactionState: 'ERROR',
                     error: {
                         intent: 'PAYMENT_AUTHORIZATION',
@@ -270,19 +179,10 @@ async function testProcessPayment(paymentData) {
                     }
                 })
             }
-
-            // resolve is not defined
-
-
-            console.log("DEBUG APPROVED")
         } else {
-            console.log("DEBUG ELSE")
-
             return { transactionState: "ERROR" };
         }
     } catch (err) {
-        console.log("DEBUG CATCH")
-        console.log(err)
         return {
             transactionState: "ERROR",
             error: {
