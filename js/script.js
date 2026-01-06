@@ -103,7 +103,9 @@ function addGooglePayButton() {
     const button =
         paymentsClient.createButton({
             onClick: onGooglePaymentButtonClicked /* To be defined later */,
-            allowedPaymentMethods: allowedPaymentMethods
+            allowedPaymentMethods: allowedPaymentMethods,
+            buttonType: 'plain',
+            buttonSizeMode: 'fill',
         });
     document.getElementById('container').appendChild(button);
 }
