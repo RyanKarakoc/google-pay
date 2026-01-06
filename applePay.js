@@ -10,6 +10,15 @@ applepay.config()
     .then(applepayConfig => {
         if (applepayConfig.isEligible) {
             document.getElementById("applepay-container").innerHTML = '<apple-pay-button id="btn-appl" buttonstyle="black" type="buy" locale="en">';
+
+            // Add the click event listener here
+            const applePayBtn = document.getElementById("btn-appl");
+            if (applePayBtn) {
+                applePayBtn.addEventListener("click", function () {
+                    // Start the Apple Pay session when the button is clicked
+                    session.begin();
+                });
+            }
         }
     })
     .catch(applepayConfigError => {
@@ -84,6 +93,3 @@ session.onpaymentauthorized = (event) => {
                 });
         });
 };
-
-// SHOW PAYMENT SHEET
-session.begin();
