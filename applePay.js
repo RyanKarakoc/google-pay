@@ -15,8 +15,10 @@ applepay.config()
             const applePayBtn = document.getElementById("btn-appl");
             if (applePayBtn) {
                 applePayBtn.addEventListener("click", function () {
+                    console.log("button clicked")
                     // Start the Apple Pay session when the button is clicked
-                    session.begin();
+                    //const session = new ApplePaySession(4, paymentRequest);
+                    //session.begin();
                 });
             }
         }
@@ -40,7 +42,6 @@ const paymentRequest = {
         amount: "10.00",
     }
 };
-const session = new ApplePaySession(4, paymentRequest);
 
 // CALLBACK onvalidatemerchant
 session.onvalidatemerchant = (event) => {
