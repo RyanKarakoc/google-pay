@@ -23,7 +23,7 @@ applepay.config()
                         countryCode: applepayConfig.countryCode,
                         merchantCapabilities: applepayConfig.merchantCapabilities,
                         supportedNetworks: applepayConfig.supportedNetworks,
-                        currencyCode: "USD",
+                        currencyCode: "GBP",
                         requiredShippingContactFields: ["name", "phone", "email", "postalAddress"],
                         requiredBillingContactFields: ["postalAddress"],
                         total: {
@@ -35,17 +35,21 @@ applepay.config()
 
                     const session = new ApplePaySession(4, paymentRequest);
 
-
-
-
                     // CALLBACK onvalidatemerchant
                     session.onvalidatemerchant = (event) => {
+                        console.log("-- DEBUG ON VALID MERCHANT --");
+
                         applepay.validateMerchant({
                             validationUrl: event.validationURL,
                             displayName: "My Store"
                         })
                             .then(validateResult => {
+
+                                console.log("-- DEBUG 1 --");
+
                                 session.completeMerchantValidation(validateResult.merchantSession);
+
+                                console.log("-- DEBUG 2 --");
                             })
                             .catch(validateError => {
                                 console.error(validateError);
@@ -55,6 +59,8 @@ applepay.config()
 
                     // CALLBACK onpaymentauthorized 
                     session.onpaymentauthorized = (event) => {
+                        console.log("-- DEBUG ON PAYMENT AUTHORISED --");
+
                         console.log('Your billing address is:', event.payment.billingContact);
                         console.log('Your shipping address is:', event.payment.shippingContact);
                         fetch("/api/orders", {
@@ -63,6 +69,9 @@ applepay.config()
                         })
                             .then(res => res.json())
                             .then((createOrderData) => {
+
+                                console.log("-- DEBUG 3 --");
+
                                 var orderId = createOrderData.id;
                                 applepay.confirmOrder({
                                     orderId: orderId,
@@ -70,12 +79,16 @@ applepay.config()
                                     billingContact: event.payment.billingContact
                                 })
                                     .then(confirmResult => {
+                                        console.log("-- DEBUG 4 --");
+
                                         session.completePayment(ApplePaySession.STATUS_SUCCESS);
                                         fetch(`/api/orders/${orderId}/capture`, {
                                             method: "post",
                                         })
                                             .then(res => res.json())
                                             .then(captureResult => {
+                                                console.log("-- DEBUG 5 --");
+
                                                 console.log(captureResult);
                                             })
                                             .catch(captureError => console.error(captureError));
