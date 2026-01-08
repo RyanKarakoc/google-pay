@@ -39,6 +39,8 @@ applepay.config()
                     session.onvalidatemerchant = (event) => {
                         console.log("-- DEBUG ON VALID MERCHANT --");
 
+                        console.log(event)
+
                         applepay.validateMerchant({
                             validationUrl: event.validationURL,
                             displayName: "My Store"
