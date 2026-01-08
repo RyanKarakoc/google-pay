@@ -33,6 +33,9 @@ applepay.config()
                         }
                     };
 
+                    console.log(paymentRequest)
+
+
                     const session = new ApplePaySession(4, paymentRequest);
 
                     // CALLBACK onvalidatemerchant
