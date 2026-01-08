@@ -62,8 +62,6 @@ applepay.config()
                             });
                     };
 
-                    // my apple-developer-merchantid-domain-association file is located at 
-
                     // CALLBACK onpaymentauthorized 
                     session.onpaymentauthorized = (event) => {
                         console.log("-- DEBUG ON PAYMENT AUTHORISED --");
