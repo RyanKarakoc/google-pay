@@ -80,6 +80,7 @@
     <Content Include=".well-known\apple-developer-merchantid-domain-association">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include=".nojekyll" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
